@@ -8,11 +8,14 @@ https://www.science.org/doi/10.1126/science.abi8264) focusing on just SGDP and
 1000 Genomes Project for now, and run tsinfer 1.0 with both sources. It has to
 be done in GRCh37 because no phased GRCh38 SGDP dataset is currently available.
 We also need to download the ancestral allele data and output it as a zarr and
-recombination maps too. The Snakemake pipeline just has to download the data for
+recombination maps too. The Snakemake pipeline downloads the data for
 chromosomes specified in its config.yaml from the source URLs specified there,
-then run bio2zarr to convert them into the right format for tsinfer 1.0. For now
-(and possibly forever) don't integrate tsinfer into the Snakemake pipeline, it
-just has to assemble everything needed.
+runs bio2zarr to convert them into the right format for tsinfer 1.0, and then
+runs tsinfer (infer-ancestors, match, post-process) on the region given in
+config.yaml. The tsinfer TOML config is generated from config.yaml by the
+pipeline. tsinfer is installed from the main branch of
+https://github.com/tskit-dev/tsinfer (see pyproject.toml); run
+`uv lock --upgrade-package tsinfer` to update to the latest commit.
 
 The snakemake architecture should take inspiration from
 https://github.com/benjeffery/tsinfer-snakemake/, although bear in mind this is
